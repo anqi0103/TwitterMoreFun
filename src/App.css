@@ -1,38 +1,76 @@
+html {
+  height: 100%;
+}
+
+body {
+  height: 100%;
+  font-family: 'Montserrat', sans-serif;
+}
+
+#root {
+  height: 100%;
+}
+
 .App {
-  text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  height: 100%;
 }
 
-.App-link {
-  color: #61dafb;
+.App-body {
+  flex-grow: 1;
+  display: flex;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.App-friends {
+  width: 350px;
+  background-color: rgb(223, 223, 94);
+  flex-shrink: 0;
+}
+
+.App-tweets {
+  flex-grow: 1;
+  flex-direction: row;
+}
+
+.App-user-profile {
+  padding: 10px;
+  height: 300px;
+}
+
+.App-backgroud-image {
+  height: 300px;
+  width: 100%;
+}
+
+.App-tweet {
+  margin-top: 35px;
+  margin-left: 10px;
+  display: flex;
+  flex-direction: row;
+}
+
+.App-tweet-display {
+  margin-left: 20px;
+  margin-right: 20px;
+}
+
+.App-tweet-time {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.App-friend {
+  margin-top: 35px;
+  display: flex;
+  flex-direction: row;
+}
+
+.App-profile {
+  margin-left: 10px;
+  margin-right: 20px;
+}
+
+.App-img {
+  border-radius: 50%;
 }

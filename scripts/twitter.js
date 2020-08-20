@@ -11,58 +11,56 @@ const T = new Twit({
 })
 
 T.get('friends/list', {}, (err, data, response) => {
-  let promises = [];
-  for (let i = 0; i < data.users.length; i++) {
-    let newPromise = new Promise((resolve, reject) => {
-      model.Friend.update(
-        {id: data.users[i].id},
+  console.log(data);
+  model.mongoose.connection.dropCollection(
+    'friends',
+    (err, result) => {
+      console.log('Collection dropped');
+
+      const users = data.users.map((user) => (
         {
-          id: data.users[i].id,
-          name: data.users[i].name,
-          screen_name: data.users[i].screen_name, profile_background_image_url: data.users[i].profile_background_image_url
-        },
-        {upsert: true},
+          id: user.id,
+          name: user.name,
+          screen_name: user.screen_name,
+          profile_image_url: user.profile_image_url
+        }
+      ));
+
+      model.Friend.insertMany(
+        users,
         (err, data) => {
           if (err) {
-            reject(err);
-          } else {
-            resolve();
+            console.log(err);
           }
         }
-      )
-    });
-    promises.push(newPromise);
-  }
-  Promise.all(promises).then(() => {
-    console.log('Finished friend list!!');
-  })
-})
+      );
+    }
+  );
+});
 
 T.get('statuses/home_timeline', {}, (err, data, response) => {
-  let promises = [];
-  for (let i = 0; i < data.length; i++) {
-    let newPromise = new Promise((resolve, reject) => {
-      model.twittTimeline.update(
-        {id_str: data[i].id_str},
+  model.mongoose.connection.dropCollection(
+    'twitts',
+    (err, result) => {
+      console.log('Collection dropped second!!!');
+
+      const tweets = data.map((tweet) => (
         {
-          id_str: data[i].id_str,
-          created_at: data[i].created_at,
-          user_id: data[i].user.id,
-          text: data[i].text
-        },
-        {upsert: true},
+          id_str: tweet.id_str,
+          created_at: tweet.created_at,
+          user_id: tweet.user.id,
+          text: tweet.text
+        }
+      ));
+
+      model.twittTimeline.insertMany(
+        tweets,
         (err, data) => {
           if (err) {
-            reject(err);
-          } else {
-            resolve();
+            console.log(err);
           }
         }
-      )
-    });
-    promises.push(newPromise);
-  }
-  Promise.all(promises).then(() => {
-    console.log('Finished home timeline!!!!');
-  })
-})
+      );
+    }
+  );
+});

@@ -5,7 +5,7 @@ let friendSchema = new mongoose.Schema({
   id: Number,
   name: String,
   screen_name: String,
-  profile_background_image_url: String
+  profile_image_url: String
 });
 
 let twittTimelineSchema = new mongoose.Schema({
@@ -20,4 +20,4 @@ let twittTimeline = mongoose.model('twittTimeline', twittTimelineSchema)
 
 module.exports.Friend = Friend;
 module.exports.twittTimeline = twittTimeline;
-
+module.exports.mongoose = mongoose;
