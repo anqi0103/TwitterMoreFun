@@ -1,7 +1,7 @@
 import React from 'react';
 
 const TweetItem = (props) => {
-  let profileImageUrl = null
+  let profileImageUrl = null;
   if (props.tweet.user.length !== 0) {
     profileImageUrl = props.tweet.user[0].profile_image_url;
   }
@@ -16,7 +16,7 @@ const TweetItem = (props) => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
 export default TweetItem;

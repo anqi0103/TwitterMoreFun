@@ -4,7 +4,6 @@ html {
 
 body {
   height: 100%;
-  font-family: 'Montserrat', sans-serif;
 }
 
 #root {
@@ -12,30 +11,55 @@ body {
 }
 
 .App {
-  display: flex;
-  flex-direction: column;
   height: 100%;
 }
 
+.App-header {
+  margin: 5px;
+  height: 40px;
+  border: 1px solid lightgray;
+  border-radius: 4px;
+}
+
+.App-header-title {
+  font-size: 16px;
+  line-height: 20px;
+  text-align: center;
+  color: grey;
+}
+
 .App-body {
-  flex-grow: 1;
   display: flex;
+  margin: 5px;
+  align-items: flex-start;
 }
 
 .App-friends {
-  width: 350px;
-  background-color: rgb(223, 223, 94);
+  width: 300px;
   flex-shrink: 0;
+  border: 1px solid lightgray;
+  border-radius: 4px;
+  padding-bottom: -5px;
 }
 
 .App-tweets {
   flex-grow: 1;
-  flex-direction: row;
+  /* flex-direction: row; */
 }
 
 .App-user-profile {
   padding: 10px;
   height: 300px;
+  position: relative;
+}
+
+.App-user-profile-image {
+  width: 120px;
+  height: 120px;
+  position: absolute;
+  top: 200px;
+  left: 100px;
+  border-radius: 50%;
 }
 
 .App-backgroud-image {
@@ -48,6 +72,7 @@ body {
   margin-left: 10px;
   display: flex;
   flex-direction: row;
+  align-items: flex-start;
 }
 
 .App-tweet-display {
@@ -61,16 +86,27 @@ body {
 }
 
 .App-friend {
-  margin-top: 35px;
+  margin-bottom: 5px;
   display: flex;
   flex-direction: row;
+  padding: 10px;
+  align-items: flex-start;
+}
+
+.App-friend:hover {
+  background-color: gainsboro;
+  cursor: pointer;
 }
 
 .App-profile {
-  margin-left: 10px;
-  margin-right: 20px;
+  margin-right: 10px;
 }
 
 .App-img {
   border-radius: 50%;
+}
+
+.App-profile-screenName {
+  font-size: 14px;
+  color: #888888;
 }

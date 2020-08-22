@@ -12,26 +12,35 @@ class App extends React.Component {
     super(props);
     this.state = {
       data: [],
-      tweets: []
-    }
+      tweets: [],
+      selectedUser: null,
+    };
+    this.onProfileClick = this.onProfileClick.bind(this);
   }
 
-
   getListOfFriends(data) {
-    axios.get(ENDPOINTFriend)
-      .then(response => {
-        this.setState({data: response.data});
+    axios
+      .get(ENDPOINTFriend)
+      .then((response) => {
+        this.setState({ data: response.data });
       })
       .catch(console.log);
   }
 
   getListOfTweets(data) {
-    axios.get(ENDPOINTTweet)
-      .then(response => {
-        console.log("Get all the tweets", response);
-        this.setState({tweets: response.data});
+    axios
+      .get(ENDPOINTTweet)
+      .then((response) => {
+        console.log('Get all the tweets', response);
+        this.setState({ tweets: response.data });
       })
-      .catch(console.log)
+      .catch(console.log);
+  }
+
+  onProfileClick(userId) {
+    let selectedFriend = this.state.data.find((friend) => friend.id === userId);
+    // console.log('selectedFriend', selectedFriend);
+    this.setState({ selectedUser: selectedFriend });
   }
 
   componentDidMount() {
@@ -40,18 +49,44 @@ class App extends React.Component {
   }
 
   render() {
+    let selectedUserProfileImage = null;
+    let selectedUserBackgroundImage = null;
+    if (this.state.selectedUser != null) {
+      selectedUserProfileImage = this.state.selectedUser.profile_image_url.replace(
+        '_normal',
+        ''
+      );
+      selectedUserBackgroundImage = this.state.selectedUser.profile_banner_url;
+    }
+
     return (
       <div className="App">
+        <div className="App-header">
+          <h1 className="App-header-title">TwitterFun</h1>
+        </div>
         <div className="App-body">
-          <div className="App-friends">
-            <ListOfFriends profile={this.state.data}/>
-          </div>
+          <ListOfFriends
+            profile={this.state.data}
+            onProfileClick={this.onProfileClick}
+          />
           <div className="App-tweets">
-            <div className="App-user-profile">
-              <img className="App-backgroud-image" alt="" src="https://www.fugenx.com/wp-content/uploads/2018/09/groups-header-background-2.png"/>
-            </div>
-            <div>
-              <ListOfTweets tweetInfo={this.state.tweets}/>
+            <div style={{ width: '500px', margin: '0 auto' }}>
+              <div className="App-user-profile">
+                <div
+                  className="App-backgroud-image"
+                  style={{
+                    background: `url(${selectedUserBackgroundImage}/web_retina)`,
+                  }}
+                />
+                <img
+                  className="App-user-profile-image"
+                  alt=""
+                  src={selectedUserProfileImage}
+                />
+              </div>
+              <div>
+                <ListOfTweets tweetInfo={this.state.tweets} />
+              </div>
             </div>
           </div>
         </div>

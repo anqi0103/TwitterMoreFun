@@ -2,9 +2,15 @@ import React from 'react';
 import FriendItem from './Profile';
 
 const ListOfFriends = (props) => (
-  <div>
-    {props.profile.map((item) => <FriendItem key={item.id} friend={item} />)}
+  <div className="App-friends">
+    {props.profile.map((item) => (
+      <FriendItem
+        key={item.id}
+        friend={item}
+        onClickProfile={props.onProfileClick}
+      />
+    ))}
   </div>
-)
+);
 
 export default ListOfFriends;
