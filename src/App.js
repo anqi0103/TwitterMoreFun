@@ -18,7 +18,7 @@ class App extends React.Component {
     this.onProfileClick = this.onProfileClick.bind(this);
   }
 
-  getListOfFriends(data) {
+  getListOfFriends() {
     axios
       .get(ENDPOINTFriend)
       .then((response) => {
@@ -27,11 +27,10 @@ class App extends React.Component {
       .catch(console.log);
   }
 
-  getListOfTweets(data) {
+  getListOfTweets(userId) {
     axios
-      .get(ENDPOINTTweet)
+      .get(ENDPOINTTweet + `/?user_id=${userId}`)
       .then((response) => {
-        console.log('Get all the tweets', response);
         this.setState({ tweets: response.data });
       })
       .catch(console.log);
@@ -39,13 +38,12 @@ class App extends React.Component {
 
   onProfileClick(userId) {
     let selectedFriend = this.state.data.find((friend) => friend.id === userId);
-    // console.log('selectedFriend', selectedFriend);
+    this.getListOfTweets(userId);
     this.setState({ selectedUser: selectedFriend });
   }
 
   componentDidMount() {
     this.getListOfFriends();
-    this.getListOfTweets();
   }
 
   render() {
@@ -75,7 +73,7 @@ class App extends React.Component {
                 <div
                   className="App-backgroud-image"
                   style={{
-                    background: `url(${selectedUserBackgroundImage}/web_retina)`,
+                    backgroundImage: `url(${selectedUserBackgroundImage}/web_retina)`,
                   }}
                 />
                 <img

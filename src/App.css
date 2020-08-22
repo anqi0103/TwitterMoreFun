@@ -65,6 +65,9 @@ body {
 .App-backgroud-image {
   height: 300px;
   width: 100%;
+  background-size: contain;
+  background-repeat: no-repeat;
+  border-radius: 4px;
 }
 
 .App-tweet {

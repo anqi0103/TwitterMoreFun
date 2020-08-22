@@ -26,20 +26,25 @@ app.get('/twitts', (req, res) => {
   //     res.status(500).send(err);
   //   });
 
-  model.twittTimeline.aggregate([{
-    $lookup: {
-        from: "friends", // collection name in db
-        localField: "user_id",
-        foreignField: "id",
-        as: "user"
-    }
-  }]).exec(function(err, tweets) {
-    res.status(200).send(tweets);
-  });
+  model.twittTimeline
+    .aggregate([
+      { $match: { user_id: Number(req.query.user_id) } },
+      {
+        $lookup: {
+          from: 'friends', // collection name in db
+          localField: 'user_id',
+          foreignField: 'id',
+          as: 'user',
+        },
+      },
+    ])
+    .exec(function (err, tweets) {
+      res.status(200).send(tweets);
+    });
 });
 
 let port = 1120;
 
-app.listen(port, function() {
+app.listen(port, function () {
   console.log(`listening on port ${port}`);
 });
