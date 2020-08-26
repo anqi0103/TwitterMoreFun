@@ -4,7 +4,7 @@ const app = express();
 const model = require('../database/index.js');
 const bodyParser = require('body-parser');
 
-app.use(express.static(__dirname + '/../src'));
+app.use(express.static(path.join(__dirname + '/../src')));
 app.use(bodyParser.json());
 
 app.get('/friends', (req, res) => {

@@ -16,8 +16,8 @@ let twittTimelineSchema = new mongoose.Schema({
   text: String,
 });
 
-let Friend = mongoose.model('Friend', friendSchema);
-let twittTimeline = mongoose.model('twittTimeline', twittTimelineSchema);
+let Friend = mongoose.model('friends', friendSchema);
+let twittTimeline = mongoose.model('tweets', twittTimelineSchema);
 
 module.exports.Friend = Friend;
 module.exports.twittTimeline = twittTimeline;

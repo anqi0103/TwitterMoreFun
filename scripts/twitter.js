@@ -20,46 +20,58 @@ const mapUsers = (data) => {
 };
 
 model.mongoose.connection.dropCollection('friends', (err, result) => {
-  // console.log('Collection dropped');
-  T.get('friends/list', {}, (err, data, response) => {
-    // console.log('First Page data loaded');
-    const users = mapUsers(data);
-    model.Friend.insertMany(users, (err, data) => {
-      if (err) {
-        console.log(err);
-      }
-    });
+  console.log('Friends Collection dropped');
 
-    T.get(
-      'friends/list',
-      { cursor: data.next_cursor_str },
-      (err, data, response) => {
-        const users = mapUsers(data);
+  model.mongoose.connection.dropCollection('tweets', (err, result) => {
+    console.log('Tweets Collection dropped');
 
-        model.Friend.insertMany(users, (err, data) => {
-          if (err) {
-            console.log(err);
+    T.get('friends/list', {}, (err, data, response) => {
+      console.log(data);
+      console.log('Step 1');
+      const users = mapUsers(data);
+      console.log('Step 2');
+      model.Friend.insertMany(users, (err, data) => {
+        console.log('Step 3');
+        if (err) {
+          console.log(err);
+        }
+      });
+      T.get(
+        'friends/list',
+        { cursor: data.next_cursor_str },
+        (err, data, response) => {
+          console.log('Step 4');
+          const users = mapUsers(data);
+          model.Friend.insertMany(users, (err, data) => {
+            console.log('Step 5');
+            if (err) {
+              console.log(err);
+            }
+          });
+        }
+      );
+
+      for (let i = 0; i < data.users.length; i++) {
+        let user_id = data.users[i].id;
+        T.get(
+          'statuses/user_timeline',
+          { count: 50, user_id: user_id },
+          (err, data, response) => {
+            const tweets = data.map((tweet) => ({
+              id_str: tweet.id_str,
+              created_at: tweet.created_at,
+              user_id: tweet.user.id,
+              text: tweet.text,
+            }));
+
+            model.twittTimeline.insertMany(tweets, (err, data) => {
+              if (err) {
+                console.log(err);
+              }
+              console.log('Finished Insert Tweets for user_id', user_id);
+            });
           }
-        });
-      }
-    );
-  });
-});
-
-model.mongoose.connection.dropCollection('twitts', (err, result) => {
-  console.log('Collection dropped second!!!');
-
-  T.get('statuses/home_timeline', {}, (err, data, response) => {
-    const tweets = data.map((tweet) => ({
-      id_str: tweet.id_str,
-      created_at: tweet.created_at,
-      user_id: tweet.user.id,
-      text: tweet.text,
-    }));
-
-    model.twittTimeline.insertMany(tweets, (err, data) => {
-      if (err) {
-        console.log(err);
+        );
       }
     });
   });
