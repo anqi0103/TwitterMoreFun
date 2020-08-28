@@ -69,7 +69,10 @@ class App extends React.Component {
           />
           <div className="App-tweets">
             <div style={{ width: '500px', margin: '0 auto' }}>
-              <div className="App-user-profile">
+              <div
+                className="App-user-profile"
+                style={{ width: '500px', height: '300px' }}
+              >
                 <div
                   className="App-backgroud-image"
                   style={{

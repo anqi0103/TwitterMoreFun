@@ -19,19 +19,37 @@ const mapUsers = (data) => {
   }));
 };
 
+const getTweetsForEachUser = (friendsData) => {
+  for (let i = 0; i < friendsData.users.length; i++) {
+    let user_id = friendsData.users[i].id_str;
+    T.get(
+      'statuses/user_timeline',
+      { count: 50, user_id: user_id },
+      (err, data, response) => {
+        const tweets = data.map((tweet) => ({
+          id_str: tweet.id_str,
+          created_at: tweet.created_at,
+          user_id: tweet.user.id,
+          text: tweet.text,
+        }));
+
+        model.twittTimeline.insertMany(tweets, (err, data) => {
+          if (err) {
+            console.log(err);
+          }
+        });
+      }
+    );
+  }
+};
+
 model.mongoose.connection.dropCollection('friends', (err, result) => {
-  console.log('Friends Collection dropped');
-
   model.mongoose.connection.dropCollection('tweets', (err, result) => {
-    console.log('Tweets Collection dropped');
-
     T.get('friends/list', {}, (err, data, response) => {
-      console.log(data);
-      console.log('Step 1');
+      getTweetsForEachUser(data);
       const users = mapUsers(data);
-      console.log('Step 2');
+
       model.Friend.insertMany(users, (err, data) => {
-        console.log('Step 3');
         if (err) {
           console.log(err);
         }
@@ -40,39 +58,16 @@ model.mongoose.connection.dropCollection('friends', (err, result) => {
         'friends/list',
         { cursor: data.next_cursor_str },
         (err, data, response) => {
-          console.log('Step 4');
+          getTweetsForEachUser(data);
           const users = mapUsers(data);
+
           model.Friend.insertMany(users, (err, data) => {
-            console.log('Step 5');
             if (err) {
               console.log(err);
             }
           });
         }
       );
-
-      for (let i = 0; i < data.users.length; i++) {
-        let user_id = data.users[i].id;
-        T.get(
-          'statuses/user_timeline',
-          { count: 50, user_id: user_id },
-          (err, data, response) => {
-            const tweets = data.map((tweet) => ({
-              id_str: tweet.id_str,
-              created_at: tweet.created_at,
-              user_id: tweet.user.id,
-              text: tweet.text,
-            }));
-
-            model.twittTimeline.insertMany(tweets, (err, data) => {
-              if (err) {
-                console.log(err);
-              }
-              console.log('Finished Insert Tweets for user_id', user_id);
-            });
-          }
-        );
-      }
     });
   });
 });
