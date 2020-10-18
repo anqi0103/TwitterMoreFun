@@ -23,6 +23,7 @@ class App extends React.Component {
       .get(ENDPOINTFriend)
       .then((response) => {
         this.setState({ data: response.data });
+        this.onProfileClick(response.data[0].id);
       })
       .catch(console.log);
   }

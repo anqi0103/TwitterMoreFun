@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/twitterMore');
+mongoose.connect(process.env.MONGO_CONNECT);
 
 let friendSchema = new mongoose.Schema({
   id: Number,

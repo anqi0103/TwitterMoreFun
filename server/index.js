@@ -4,7 +4,7 @@ const app = express();
 const model = require('../database/index.js');
 const bodyParser = require('body-parser');
 
-app.use(express.static(path.join(__dirname + '/../src')));
+app.use(express.static(path.join(__dirname, '..', 'build')));
 app.use(bodyParser.json());
 
 app.get('/friends', (req, res) => {
@@ -43,7 +43,7 @@ app.get('/twitts', (req, res) => {
     });
 });
 
-let port = 1120;
+let port = process.env.PORT || 1120;
 
 app.listen(port, function () {
   console.log(`listening on port ${port}`);
