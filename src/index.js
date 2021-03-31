@@ -1,17 +1,16 @@
+// using ES6 import syntax
 import React from 'react';
+// render components to webpage
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App.js';
-import * as serviceWorker from './serviceWorker';
 
 ReactDOM.render(
+  //StrictMode is a tool for highlighting potential problems in an application. 
+  //Like Fragment, StrictMode does not render any visible UI. It activates additional checks and warnings for its descendants.
   <React.StrictMode>
     <App />
   </React.StrictMode>,
+  // render the <App /> into root
   document.getElementById('root')
 );
-
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.unregister();
