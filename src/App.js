@@ -1,4 +1,5 @@
 import React from 'react';
+// Make REST request
 import axios from 'axios';
 import ListOfFriends from './ListOfFriends';
 import ListOfTweets from './ListOfTweets';
@@ -7,6 +8,7 @@ import './App.css';
 let ENDPOINTFriend = '/friends';
 let ENDPOINTTweet = '/twitts';
 
+// class component which can hold state
 class App extends React.Component {
   constructor(props) {
     super(props);
